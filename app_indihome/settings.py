@@ -80,10 +80,10 @@ WSGI_APPLICATION = 'app_indihome.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'd5a6v0gqpb6v6j',
-        'USER': 'wzymxrwjuiultl',
-        'PASSWORD': '1abbe54aba74c4fa298741c7aa0fca54e74d001b746ea92ebf26b32e6566cd97',
-        'HOST': 'ec2-174-129-33-186.compute-1.amazonaws.com',
+        'NAME': 'd909r7ddku38ib',
+        'USER': 'stqczkddyldena',
+        'PASSWORD': '3d14ac2ec13d77cc6817d7da84fe373f5d8ed0f1e16614d0a0aaddc23c7f86eb',
+        'HOST': 'ec2-174-129-32-240.compute-1.amazonaws.com',
         'PORT': '5432',
     }
 }
