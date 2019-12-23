@@ -15,9 +15,9 @@ class Pelanggan(models.Model):
     pic = models.ForeignKey(Pic, on_delete=models.CASCADE, related_name='pic_fk')
     paket = models.CharField(max_length=15, blank=False)
     ip_gpon = models.CharField('IP GPON', max_length=15, blank=False)
-    slotPort = models.CharField('SLOT/PORT', max_length=5, blank=False)
-    onuId = models.CharField('ONU ID', max_length=2, blank=False)
-    snOnt = models.CharField('Serial Number ONT', max_length=16, blank=False)
+    slot_port = models.CharField('SLOT/PORT', max_length=5, blank=False)
+    onu_id = models.CharField('ONU ID', max_length=2, blank=False)
+    sn_ont = models.CharField('Serial Number ONT', max_length=16, blank=False)
     harga = models.FloatField('Harga', blank=True)
     status_choice = (
         ('Block', 'Block'),
@@ -54,9 +54,9 @@ class Iptv(models.Model):
 class NomorCadangan(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     inet = models.CharField(max_length=12)
-    passInet = models.CharField(max_length=25)
+    pass_inet = models.CharField(max_length=25)
     iptv = models.CharField(max_length=14)
-    passTv = models.CharField(max_length=7)
+    pass_iptv = models.CharField(max_length=7)
     paket = models.CharField(max_length=15)
     status_choice = (
         ('SAFETY', 'SAFETY'),

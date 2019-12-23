@@ -24,7 +24,7 @@ class picAdmin(admin.ModelAdmin):
 admin.site.register(Pic, picAdmin)
 
 class pelangganAdmin(admin.ModelAdmin):
-    list_display = ('nama', 'Pic', 'Internet', 'Iptv', 'paket', 'ip_gpon', 'slotPort', 'onuId', 'snOnt', 'harga', 'status')
+    list_display = ('nama', 'Pic', 'Internet', 'Iptv', 'paket', 'ip_gpon', 'slot_port', 'onu_id', 'sn_ont', 'harga', 'status')
     list_display_links = ('nama',)
     search_fields = ('nama', 'pic__nama', 'inet_fk__nomor', 'iptv_fk__nomor', 'snOnt', 'harga')
     list_per_page = 20
