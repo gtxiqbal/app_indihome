@@ -1,0 +1,4 @@
+.vscode/
+.idea/
+venv/
+indihome_app/migrations/0001_initial.py

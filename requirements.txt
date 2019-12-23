@@ -1,0 +1,7 @@
+django
+gunicorn
+django-heroku
+#mysqlclient
+djangorestframework
+markdown
+django-filter
