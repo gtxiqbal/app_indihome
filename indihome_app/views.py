@@ -14,14 +14,14 @@ def getPelangganAll(request):
 
 @api_view(['GET'])
 def getByNamaPelanggan(request, nama_pel):
-    pel = Pelanggan.objects.filter(nama=nama_pel)
+    pel = Pelanggan.objects.filter(nama__contains=nama_pel)
     serializer = PelangganSerializer(pel, many=True)
     data = serializer.data
     return JsonResponse({"pelanggan": data})
 
 @api_view(['GET'])
 def getByPicPelanggan(request, nama_pic):
-    pel = Pelanggan.objects.filter(pic__nama=nama_pic)
+    pel = Pelanggan.objects.filter(pic__nama__contains=nama_pic)
     serializer = PelangganSerializer(pel, many=True)
     data = serializer.data
     return JsonResponse({"pelanggan": data})
