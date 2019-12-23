@@ -85,9 +85,6 @@ DATABASES = {
         'PASSWORD': 'e99775321a8a2fdbddcf0ccabb55d28dba07bf182543393f22c75bb2fd324264',
         'HOST': 'ec2-174-129-33-132.compute-1.amazonaws.com',
         'PORT': '5432',
-        'OPTIONS': {
-           'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-        }
     }
 }
 
