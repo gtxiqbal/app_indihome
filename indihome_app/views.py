@@ -1,5 +1,6 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from .modul import Modul
 from django.http import JsonResponse
 from .models import Pelanggan
 from .serializers import PelangganSerializer
@@ -14,14 +15,14 @@ def getPelangganAll(request):
 
 @api_view(['GET'])
 def getByNamaPelanggan(request, nama_pel):
-    pel = Pelanggan.objects.filter(nama__icontains=nama_pel)
+    pel = Pelanggan.objects.filter(nama=Modul.FirstUpperCaseWord(nama_pel))
     serializer = PelangganSerializer(pel, many=True)
     data = serializer.data
     return JsonResponse({"pelanggan": data})
 
 @api_view(['GET'])
 def getByPicPelanggan(request, nama_pic):
-    pel = Pelanggan.objects.filter(pic__nama__icontains=nama_pic)
+    pel = Pelanggan.objects.filter(pic__nama=Modul.FirstUpperCaseWord(nama_pic))
     serializer = PelangganSerializer(pel, many=True)
     data = serializer.data
     return JsonResponse({"pelanggan": data})
