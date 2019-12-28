@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 # Create your models here.
 class UserTelegram(models.Model):
     auth_user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, related_name='tg_fk')
-    id_chat_user = models.CharField(max_length=25)
+    id_chat_user = models.CharField(max_length=25, unique=True)
 
 class Pic(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)

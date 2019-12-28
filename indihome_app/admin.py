@@ -1,6 +1,19 @@
 from django.contrib import admin
-from .models import Pic, Pelanggan, Internet, Iptv
+from .models import Pic, Pelanggan, Internet, Iptv, UserTelegram
 # Register your models here.
+class UserTelegramAdmin(admin.ModelAdmin):
+    list_display = ('Nama', 'Username', 'id_chat_user')
+    search_fields = ('auth_user__username', 'auth_user__first_name', 'auth_user__last_name')
+    ordering = ('auth_user__first_name', 'auth_user__last_name', 'auth_user__username')
+    list_per_page = 15
+
+    def Nama(self, obj):
+        return f"{obj.auth_user.first_name} {obj.auth_user.last_name}"
+
+    def Username(self, obj):
+        return obj.auth_user.username
+admin.site.register(UserTelegram, UserTelegramAdmin)
+
 class pelangganTabLine(admin.TabularInline):
     model = Pelanggan
     show_change_link = True
