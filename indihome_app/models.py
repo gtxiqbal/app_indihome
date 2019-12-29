@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 # Create your models here.
 class UserTelegram(models.Model):
     auth_user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, related_name='tg_fk')
-    id_chat_user = models.CharField(max_length=25, unique=True)
+    id_chat_user = models.CharField(max_length=25, unique=True, blank=False)
 
     class Meta:
         ordering = ["auth_user__first_name", "auth_user__last_name", 'auth_user__username', 'auth_user__is_active']
