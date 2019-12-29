@@ -14,7 +14,12 @@ class UserTelegramAdmin(admin.ModelAdmin):
         return obj.auth_user.username
 
     def Status(self, obj):
-        return obj.auth_user.is_active
+        status = "Tidak Aktif"
+
+        if obj.auth_user.is_active:
+            status = "Aktif"
+
+        return status
 admin.site.register(UserTelegram, UserTelegramAdmin)
 
 class pelangganTabLine(admin.TabularInline):
