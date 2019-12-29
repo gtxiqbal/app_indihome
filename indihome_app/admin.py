@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Pic, Pelanggan, Internet, Iptv, UserTelegram
+from .models import Pic, Pelanggan, Internet, Iptv, UserTelegram, CadanganNomor, CadanganInet, CadanganIptv
 # Register your models here.
 class UserTelegramAdmin(admin.ModelAdmin):
     list_display = ('Username', 'Nama', 'id_chat_user', 'Status')
@@ -34,6 +34,14 @@ class IptvTabLine(admin.TabularInline):
     model = Iptv
     show_change_link = True
 
+class CadanganInetTabLine(admin.TabularInline):
+    model = CadanganInet
+    show_change_link = True
+
+class CadanganIptvTabLine(admin.TabularInline):
+    model = CadanganIptv
+    show_change_link = True
+
 class picAdmin(admin.ModelAdmin):
     list_display = ('nama',)
     search_fields = ('nama',)
@@ -46,7 +54,6 @@ admin.site.register(Pic, picAdmin)
 
 class pelangganAdmin(admin.ModelAdmin):
     list_display = ('nama', 'Pic', 'Internet', 'Iptv', 'paket', 'ip_gpon', 'slot_port', 'onu_id', 'sn_ont', 'harga', 'status')
-    list_display_links = ('nama',)
     search_fields = ('nama', 'pic__nama', 'inet_fk__nomor', 'iptv_fk__nomor', 'sn_ont', 'harga')
     list_per_page = 20
     list_filter = ('pic__nama',)
@@ -93,3 +100,29 @@ class IptvAdmin(admin.ModelAdmin):
     def Pelanggan(self, obj):
         return obj.pelanggan.nama
 admin.site.register(Iptv, IptvAdmin)
+
+class CadanganNomorAdmin(admin.ModelAdmin):
+    list_display = ('Internet', 'Password', 'Paket', 'Iptv', 'nama')
+    search_fields = ('ca_inet_fk__nomor', 'ca_iptv_fk__nomor', 'nama')
+    #list_display = ('Internet', 'Password', 'Paket', 'Iptv')
+    #search_fields = ('ca_inet_fk__nomor', 'ca_iptv_fk__nomor')
+    list_display_links = ('Internet', 'Iptv')
+    list_per_page = 20
+    ordering = ('ca_inet_fk__nomor', 'ca_iptv_fk__nomor')
+    inlines = [
+        CadanganInetTabLine,
+        CadanganIptvTabLine
+    ]
+
+    def Internet(self, request):
+        return f"{request.ca_inet_fk.nomor}"
+
+    def Password(self, request):
+        return f"{request.ca_inet_fk.password}"
+
+    def Paket(self, request):
+        return f"{request.ca_inet_fk.paket} - {request.ca_inet_fk.status}"
+
+    def Iptv(self, request):
+        return list(request.ca_iptv_fk.all())
+admin.site.register(CadanganNomor, CadanganNomorAdmin)

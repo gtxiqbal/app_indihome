@@ -64,22 +64,37 @@ class Iptv(models.Model):
     def __str__(self):
         return f"{self.nomor} - {self.password}"
 
-class CadanganInet(models.Model):
+class CadanganNomor(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    inet = models.CharField(max_length=12)
-    pass_inet = models.CharField(max_length=25)
-    paket = models.CharField(max_length=15)
+    nama =  models.CharField('Nama Pelanggan', max_length=25, blank=False, default="None")
+
+    def __str__(self):
+        return f"{self.ca_inet_fk.nomor} - {self.ca_inet_fk.paket}"
+
+class CadanganInet(models.Model):
+    cadangan = models.OneToOneField(CadanganNomor, on_delete=models.CASCADE, primary_key=True, related_name='ca_inet_fk')
+    nomor = models.CharField(max_length=12, blank=False)
+    password = models.CharField(max_length=25, blank=False)
+    paket = models.CharField(max_length=15, blank=False)
     status_choice = (
         ('SAFETY', 'SAFETY'),
         ('DANGER', 'DANGER')
     )
     status = models.CharField('Status', max_length=15, choices=status_choice)
 
+    def __str__(self):
+        return f"{self.nomor} - {self.password} - {self.paket} - {self.status}"
+
 class CadanganIptv(models.Model):
-    iptv = models.CharField(max_length=14)
-    pass_iptv = models.CharField(max_length=7)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    nomor = models.CharField(max_length=14, blank=False)
+    password = models.CharField(max_length=7, blank=False)
     status_choice = (
         ('SAFETY', 'SAFETY'),
         ('DANGER', 'DANGER')
     )
     status = models.CharField('Status', max_length=15, choices=status_choice)
+    pelanggan = models.ForeignKey(CadanganNomor, on_delete=models.CASCADE, related_name='ca_iptv_fk')
+
+    def __str__(self):
+        return f"{self.nomor} - {self.password} - {self.status}"
