@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import Pic, Pelanggan, Internet, Iptv, UserTelegram
 # Register your models here.
 class UserTelegramAdmin(admin.ModelAdmin):
-    list_display = ('Nama', 'Username', 'id_chat_user')
+    list_display = ('Nama', 'Username', 'id_chat_user', 'Status')
     search_fields = ('auth_user__username', 'auth_user__first_name', 'auth_user__last_name')
     ordering = ('auth_user__first_name', 'auth_user__last_name', 'auth_user__username')
     list_per_page = 15
@@ -12,6 +12,15 @@ class UserTelegramAdmin(admin.ModelAdmin):
 
     def Username(self, obj):
         return obj.auth_user.username
+
+    def Status(self, obj):
+        status = obj.auth_user.is_active
+        status_text = "Tidak Aktif"
+
+        if status is True:
+            status_text = "Aktif"
+
+        return status_text
 admin.site.register(UserTelegram, UserTelegramAdmin)
 
 class pelangganTabLine(admin.TabularInline):

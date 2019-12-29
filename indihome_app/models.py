@@ -8,7 +8,7 @@ class UserTelegram(models.Model):
     id_chat_user = models.CharField(max_length=25, unique=True)
 
     class Meta:
-        ordering = ["auth_user__first_name", "auth_user__last_name", 'auth_user__username']
+        ordering = ["auth_user__first_name", "auth_user__last_name", 'auth_user__username', 'auth_user__is_active']
         verbose_name = "User Telegram"
         verbose_name_plural = "User Telegram"
 
