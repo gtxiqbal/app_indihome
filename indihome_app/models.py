@@ -7,6 +7,14 @@ class UserTelegram(models.Model):
     auth_user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, related_name='tg_fk')
     id_chat_user = models.CharField(max_length=25, unique=True)
 
+    class Meta:
+        ordering = ["auth_user__first_name", "auth_user__last_name", 'auth_user__username']
+        verbose_name = "User Telegram"
+        verbose_name_plural = "User Telegram"
+
+    def __str__(self):
+        return f"{self.auth_user.username} - {self.auth_user.first_name} {self.auth_user.last_name}"
+
 class Pic(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     nama = models.CharField(max_length=25, blank=False)
