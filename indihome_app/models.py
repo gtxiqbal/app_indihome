@@ -64,13 +64,20 @@ class Iptv(models.Model):
     def __str__(self):
         return f"{self.nomor} - {self.password}"
 
-class NomorCadangan(models.Model):
+class CadanganInet(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     inet = models.CharField(max_length=12)
     pass_inet = models.CharField(max_length=25)
+    paket = models.CharField(max_length=15)
+    status_choice = (
+        ('SAFETY', 'SAFETY'),
+        ('DANGER', 'DANGER')
+    )
+    status = models.CharField('Status', max_length=15, choices=status_choice)
+
+class CadanganIptv(models.Model):
     iptv = models.CharField(max_length=14)
     pass_iptv = models.CharField(max_length=7)
-    paket = models.CharField(max_length=15)
     status_choice = (
         ('SAFETY', 'SAFETY'),
         ('DANGER', 'DANGER')
