@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import Pic, Pelanggan, Internet, Iptv, UserTelegram
 # Register your models here.
 class UserTelegramAdmin(admin.ModelAdmin):
-    list_display = ('Nama', 'Username', 'id_chat_user', 'Status')
+    list_display = ('Username', 'Nama', 'id_chat_user', 'Status')
     search_fields = ('auth_user__username', 'auth_user__first_name', 'auth_user__last_name')
     ordering = ('auth_user__first_name', 'auth_user__last_name', 'auth_user__username')
     list_per_page = 15
