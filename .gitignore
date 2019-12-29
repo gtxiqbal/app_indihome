@@ -1,4 +1,4 @@
 .vscode/
 .idea/
 venv/
-indihome_app/migrations/000*
+indihome_app/migrations/
