@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'indihome_app',
     'rest_framework',
+    'graphene_django'
 ]
 
 MIDDLEWARE = [
@@ -106,6 +107,10 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+GRAPHENE ={
+    'SCHEMA': 'app_indihome.schema.schema'
+}
 
 
 # Internationalization
