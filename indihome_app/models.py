@@ -22,12 +22,26 @@ class Pic(models.Model):
     def __str__(self):
         return f"{self.nama}"
 
+class Gpon(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    hostname = models.CharField('Hostname', max_length=50, blank=False)
+    ip = models.CharField('IP GPON', max_length=15, blank=False)
+    vlan = models.IntegerField('VLAN', blank=False, default=1)
+
+    class Meta:
+        ordering = ["hostname",]
+        verbose_name = "Gpon"
+        verbose_name_plural = "Gpon"
+
+    def __str__(self):
+        return f"{self.hostname}({self.ip})"
+
 class Pelanggan(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     nama = models.CharField('Nama', max_length=25, blank=False)
     pic = models.ForeignKey(Pic, on_delete=models.CASCADE, related_name='pic_fk')
     paket = models.CharField(max_length=15, blank=False)
-    ip_gpon = models.CharField('IP GPON', max_length=15, blank=False)
+    ip_gpon = models.ForeignKey(Gpon, on_delete=models.CASCADE, related_name='gpon_fk')
     slot_port = models.CharField('SLOT/PORT', max_length=5, blank=False)
     onu_id = models.CharField('ONU ID', max_length=2, blank=False)
     sn_ont = models.CharField('Serial Number ONT', max_length=16, blank=False)
@@ -46,7 +60,7 @@ class Pelanggan(models.Model):
     status = models.CharField('Status', max_length=15, choices=status_choice)
 
     class Meta:
-        ordering = ["nama", "pic__nama",]
+        ordering = ["pic__nama", "nama",]
         verbose_name = "Pelanggan"
         verbose_name_plural = "Pelanggan"
 

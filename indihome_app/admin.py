@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Pic, Pelanggan, Internet, Iptv, UserTelegram, CadanganNomor, CadanganInet, CadanganIptv
+from .models import Pic, Gpon, Pelanggan, Internet, Iptv, UserTelegram, CadanganNomor, CadanganInet, CadanganIptv
 # Register your models here.
 class UserTelegramAdmin(admin.ModelAdmin):
     list_display = ('Username', 'Nama', 'id_chat_user', 'Status')
@@ -52,10 +52,18 @@ class picAdmin(admin.ModelAdmin):
     ]
 admin.site.register(Pic, picAdmin)
 
+class GponAdmin(admin.ModelAdmin):
+    inlines = [
+        pelangganTabLine
+    ]
+admin.site.register(Gpon, GponAdmin)
+
 class pelangganAdmin(admin.ModelAdmin):
-    list_display = ('nama', 'Pic', 'Internet', 'Iptv', 'paket', 'ip_gpon', 'slot_port', 'onu_id', 'sn_ont', 'harga', 'status')
+    list_display = ('Pic', 'nama', 'Internet', 'Iptv', 'paket', 'ip_gpon', 'Vlan', 'slot_port', 'onu_id', 'sn_ont', 'harga', 'status')
+    list_display_links = ('Pic', 'nama')
+    ordering = ('pic__nama', 'nama')
     search_fields = ('nama', 'pic__nama', 'inet_fk__nomor', 'iptv_fk__nomor', 'sn_ont', 'harga')
-    list_per_page = 20
+    list_per_page = 10
     list_filter = ('pic__nama',)
     inlines = [
         InternetTabLine,
@@ -74,6 +82,9 @@ class pelangganAdmin(admin.ModelAdmin):
 
     def Iptv(self, request):
         return list(request.iptv_fk.all())
+
+    def Vlan(self, request):
+        return request.ip_gpon.vlan
 admin.site.register(Pelanggan, pelangganAdmin)
 
 class InternetAdmin(admin.ModelAdmin):
