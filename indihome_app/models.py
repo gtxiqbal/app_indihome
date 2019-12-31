@@ -31,6 +31,12 @@ class Pelanggan(models.Model):
     slot_port = models.CharField('SLOT/PORT', max_length=5, blank=False)
     onu_id = models.CharField('ONU ID', max_length=2, blank=False)
     sn_ont = models.CharField('Serial Number ONT', max_length=16, blank=False)
+    vendor_choice = (
+        ('ZTE', 'ZTE'),
+        ('FH', 'FH'),
+        ('HW', 'HW')
+    )
+    vendor = models.CharField('Vendor', max_length=15, blank=False, choices=vendor_choice)
     harga = models.FloatField('Harga', blank=True)
     status_choice = (
         ('Block', 'Block'),

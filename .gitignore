@@ -1,4 +1,5 @@
 .vscode/
 .idea/
 venv/
+indihome_app/migrations/
 =36

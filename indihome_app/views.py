@@ -1,6 +1,6 @@
 from rest_framework.decorators import api_view
 from .modul import Modul
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from .models import Pelanggan
 from .serializers import PelangganSerializer
 
@@ -38,3 +38,12 @@ def getByIptvPelanggan(request, no_iptv):
     serializer = PelangganSerializer(pel, many=True)
     data = serializer.data
     return JsonResponse({"pelanggan": data})
+
+def generateCMD(request):
+    pelanggan = Pelanggan.objects.all()
+    pa = []
+    slot_port = ""
+    for pel in pelanggan:
+        pa.append(f"ont|fh|{pel.ip_gpon}|{pel.slot_port.replace('/', '-')}|{pel.sn_ont}")
+    pa = "<br>".join(pa)
+    return HttpResponse(pa)
