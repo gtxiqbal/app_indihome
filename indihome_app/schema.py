@@ -1,24 +1,12 @@
+import graphene
 from graphene import relay, ObjectType
 from graphene_django import DjangoObjectType
 from graphene_django.filter import DjangoFilterConnectionField
 
-from indihome_app.models import Pic, Gpon, Pelanggan, Internet, Iptv
+from indihome_app.graphql.node.gpon import GponNode, CreateGpon, UpdateGpon, DeleteGpon
+from indihome_app.graphql.node.pic import PicNode, CreatePic, UpdatePic, DeletePic
+from indihome_app.models import Pelanggan, Internet, Iptv
 
-class PicNode(DjangoObjectType):
-    class Meta:
-        model = Pic
-        filter_fields = ['nama', 'pic_fk']
-        interfaces = (relay.Node, )
-
-class GponNode(DjangoObjectType):
-    class Meta:
-        model = Gpon
-        filter_fields = {
-            'ip': ['exact'],
-            'hostname': ['exact', 'icontains', 'istartswith'],
-            'gpon_fk': ['exact']
-        }
-        interfaces = (relay.Node,)
 
 class PelangganNode(DjangoObjectType):
     class Meta:
@@ -65,3 +53,13 @@ class Query(ObjectType):
 
     iptv = relay.Node.Field(IptvNode)
     all_iptv = DjangoFilterConnectionField(IptvNode)
+
+class Mutation(graphene.AbstractType):
+    create_pic = CreatePic.Field()
+    update_pic = UpdatePic.Field()
+    delete_pic = DeletePic.Field()
+
+    create_gpon = CreateGpon.Field()
+    update_gpon = UpdateGpon.Field()
+    delete_gpon = DeleteGpon.Field()
+
