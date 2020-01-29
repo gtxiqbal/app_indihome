@@ -4,23 +4,10 @@ from graphene_django import DjangoObjectType
 from graphene_django.filter import DjangoFilterConnectionField
 
 from indihome_app.graphql.node.gpon import GponNode, CreateGpon, UpdateGpon, DeleteGpon
+from indihome_app.graphql.node.pelanggan import PelangganNode, CreatePelanggan, UpdatePelanggan, DeletePelanggan
 from indihome_app.graphql.node.pic import PicNode, CreatePic, UpdatePic, DeletePic
-from indihome_app.models import Pelanggan, Internet, Iptv
+from indihome_app.models import Internet, Iptv
 
-
-class PelangganNode(DjangoObjectType):
-    class Meta:
-        model = Pelanggan
-        filter_fields = {
-            'nama': ['exact', 'icontains', 'istartswith'],
-            'sn_ont': ['exact', 'icontains'],
-            'pic__nama': ['exact'],
-            'ip_gpon__ip': ['exact'],
-            'ip_gpon__hostname': ['exact', 'icontains', 'istartswith'],
-            'inet_fk__nomor': ['exact', 'icontains', 'istartswith'],
-            'iptv_fk__nomor': ['exact', 'icontains', 'istartswith']
-        }
-        interfaces = (relay.Node,)
 
 class InternetNode(DjangoObjectType):
     class Meta:
@@ -62,4 +49,8 @@ class Mutation(graphene.AbstractType):
     create_gpon = CreateGpon.Field()
     update_gpon = UpdateGpon.Field()
     delete_gpon = DeleteGpon.Field()
+
+    create_pelanggan = CreatePelanggan.Field()
+    update_pelanggan = UpdatePelanggan.Field()
+    delete_pelanggan = DeletePelanggan.Field()
 
