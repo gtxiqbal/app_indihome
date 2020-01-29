@@ -1,71 +1,67 @@
-import graphene
-from graphene_django.types import DjangoObjectType
+from graphene import relay, ObjectType
+from graphene_django import DjangoObjectType
+from graphene_django.filter import DjangoFilterConnectionField
+
 from indihome_app.models import Pic, Gpon, Pelanggan, Internet, Iptv
 
-class picType(DjangoObjectType):
+class PicNode(DjangoObjectType):
     class Meta:
         model = Pic
+        filter_fields = ['nama', 'pic_fk']
+        interfaces = (relay.Node, )
 
-class gponType(DjangoObjectType):
+class GponNode(DjangoObjectType):
     class Meta:
         model = Gpon
+        filter_fields = {
+            'ip': ['exact'],
+            'hostname': ['exact', 'icontains', 'istartswith'],
+            'gpon_fk': ['exact']
+        }
+        interfaces = (relay.Node,)
 
-class pelangganType(DjangoObjectType):
+class PelangganNode(DjangoObjectType):
     class Meta:
         model = Pelanggan
+        filter_fields = {
+            'nama': ['exact', 'icontains', 'istartswith'],
+            'sn_ont': ['exact', 'icontains'],
+            'pic__nama': ['exact'],
+            'ip_gpon__ip': ['exact'],
+            'ip_gpon__hostname': ['exact', 'icontains', 'istartswith'],
+            'inet_fk__nomor': ['exact', 'icontains', 'istartswith'],
+            'iptv_fk__nomor': ['exact', 'icontains', 'istartswith']
+        }
+        interfaces = (relay.Node,)
 
-class internetType(DjangoObjectType):
+class InternetNode(DjangoObjectType):
     class Meta:
         model = Internet
+        filter_fields = {
+            'nomor' : ['exact', 'icontains', 'istartswith']
+        }
+        interfaces = (relay.Node,)
 
-class iptvType(DjangoObjectType):
+class IptvNode(DjangoObjectType):
     class Meta:
         model = Iptv
+        filter_fields = {
+            'nomor' : ['exact', 'icontains', 'istartswith']
+        }
+        interfaces = (relay.Node,)
 
-class Query(object):
-    all_pic = graphene.List(picType, nama=graphene.String())
-    all_gpon = graphene.List(gponType, ip=graphene.String())
-    all_pelanggan = graphene.List(pelangganType, nama=graphene.String(), ip=graphene.String(), pic=graphene.String())
-    pelanggan = graphene.Field(pelangganType, name=graphene.String())
-    all_internet = graphene.List(internetType)
-    all_iptv = graphene.List(iptvType)
+class Query(ObjectType):
+    pic = relay.Node.Field(PicNode)
+    all_pic = DjangoFilterConnectionField(PicNode)
 
-    def resolve_all_pic(self, info, **kwargs):
-        pic = Pic.objects.all()
-        return pic
+    gpon = relay.Node.Field(GponNode)
+    all_gpon = DjangoFilterConnectionField(GponNode)
 
-    def resolve_all_gpon(self, info, **kwargs):
-        ip = kwargs.get('ip')
-        gpon = Gpon.objects.all()
-        if ip is not None:
-            gpon = Gpon.objects.filter(ip=ip)
-        return gpon
+    pelanggan = relay.Node.Field(PelangganNode)
+    all_pelanggan = DjangoFilterConnectionField(PelangganNode)
 
-    def resolve_all_pelanggan(self, info, **kwargs):
-        nama = kwargs.get('nama')
-        ip = kwargs.get('ip')
-        pic = kwargs.get('pic')
+    internet = relay.Node.Field(InternetNode)
+    all_internet = DjangoFilterConnectionField(InternetNode)
 
-        pelanggan = Pelanggan.objects.prefetch_related("pic", "ip_gpon", "inet_fk", "iptv_fk")
-
-        if pic is not None and ip is not None:
-            pelanggan = Pelanggan.objects.filter(ip_gpon__ip=ip, pic__nama=pic).prefetch_related("pic", "ip_gpon", "inet_fk", "iptv_fk")
-
-        elif ip is not None:
-            pelanggan = Pelanggan.objects.filter(ip_gpon__ip=ip).prefetch_related("pic", "ip_gpon", "inet_fk", "iptv_fk")
-
-        elif pic is not None:
-            pelanggan = Pelanggan.objects.filter(pic__nama=pic).prefetch_related("pic", "ip_gpon", "inet_fk", "iptv_fk")
-
-        if nama is not None:
-            pelanggan = Pelanggan.objects.filter(nama__icontains=nama).prefetch_related("pic", "ip_gpon", "inet_fk", "iptv_fk")
-
-        return pelanggan
-
-    def resolve_all_internet(self, info, **kwargs):
-        internet = Internet.objects.all()
-        return internet
-
-    def resolve_all_iptv(self, info, **kwargs):
-        iptv = Iptv.objects.all()
-        return iptv
+    iptv = relay.Node.Field(IptvNode)
+    all_iptv = DjangoFilterConnectionField(IptvNode)
