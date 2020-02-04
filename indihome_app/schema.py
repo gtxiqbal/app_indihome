@@ -1,29 +1,13 @@
 import graphene
 from graphene import relay, ObjectType
-from graphene_django import DjangoObjectType
 from graphene_django.filter import DjangoFilterConnectionField
 
 from indihome_app.graphql.node.gpon import GponNode, CreateGpon, UpdateGpon, DeleteGpon
+from indihome_app.graphql.node.internet import InternetNode, CreateInternet, UpdateInternet, DeleteInternet
+from indihome_app.graphql.node.iptv import IptvNode, CreateIptv, UpdateIptv, DeleteIptv
 from indihome_app.graphql.node.pelanggan import PelangganNode, CreatePelanggan, UpdatePelanggan, DeletePelanggan
 from indihome_app.graphql.node.pic import PicNode, CreatePic, UpdatePic, DeletePic
-from indihome_app.models import Internet, Iptv
 
-
-class InternetNode(DjangoObjectType):
-    class Meta:
-        model = Internet
-        filter_fields = {
-            'nomor' : ['exact', 'icontains', 'istartswith']
-        }
-        interfaces = (relay.Node,)
-
-class IptvNode(DjangoObjectType):
-    class Meta:
-        model = Iptv
-        filter_fields = {
-            'nomor' : ['exact', 'icontains', 'istartswith']
-        }
-        interfaces = (relay.Node,)
 
 class Query(ObjectType):
     pic = relay.Node.Field(PicNode)
@@ -54,3 +38,10 @@ class Mutation(graphene.AbstractType):
     update_pelanggan = UpdatePelanggan.Field()
     delete_pelanggan = DeletePelanggan.Field()
 
+    create_internet = CreateInternet.Field()
+    update_internet = UpdateInternet.Field()
+    delete_internet = DeleteInternet.Field()
+
+    create_iptv = CreateIptv.Field()
+    update_iptv = UpdateIptv.Field()
+    delete_iptv = DeleteIptv.Field()
