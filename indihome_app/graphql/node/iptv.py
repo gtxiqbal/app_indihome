@@ -38,7 +38,6 @@ class UpdateIptv(relay.ClientIDMutation):
     class Input:
         nomor = String(required=False)
         password = String(required=False)
-        pelanggan_id = String(required=False)
         id = String(required=True)
 
     @classmethod
